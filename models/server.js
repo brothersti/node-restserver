@@ -1,5 +1,7 @@
 const express = require('express')
 var cors = require('cors')
+const colors = require( 'colors')
+const { dbConnection } = require('../database/config')
 
 class Server {
     constructor() {
@@ -7,11 +9,19 @@ class Server {
         this.port = process.env.PORT
         this.usuariosPath = '/api/usuarios'
 
+        // Conectar a bd
+        this.conectarDB()
+
         // Middleware
         this.middlewares()
 
         // configuraciones de rutas
         this.routes()
+    }
+
+
+    async conectarDB() {
+        await dbConnection()
     }
 
     middlewares() {
@@ -31,7 +41,7 @@ class Server {
 
     listen() {
         this.app.listen(this.port, () => {
-            console.log(`Example app listening on port ${this.port}`)
+            console.log(`Example app listening on port ${this.port}`.gray)
         })
     }
 }
