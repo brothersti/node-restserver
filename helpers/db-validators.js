@@ -2,7 +2,7 @@ const {
     Categoria,
     Role,
     Usuario,
-    Producto} = require("../models")
+    Producto } = require("../models")
 
 
 
@@ -42,7 +42,19 @@ const isIdProductExist = async (id = '') => {
     }
 }
 
+/**
+ * Validar colecciones permitidas
+ */
+const coleccionesPermitidas = (coleccion = '', colecciones = []) => {
+    const incluida = colecciones.includes(coleccion)
+    if (!incluida) {
+        throw new Error(`La colección ${coleccion} no es permitida. Colecciones permitidas: ${colecciones}`)
+    }
+    return true
+}
+
 module.exports = {
+    coleccionesPermitidas,
     isValidRol,
     isEmailExist,
     isIdUserExist,
