@@ -57,13 +57,13 @@ const googleSignIn = async (req, res = response) => {
 
     try {
         const { nombre, correo, img } = await googleVerify(id_token)
-        console.log({ nombre, correo, img })
+        // console.log({ nombre, correo, img })
 
         let usuario = await Usuario.findOne({ correo })
 
 
         if (!usuario) {
-            console.log('Usuario nuevo', usuario)
+            // console.log('Usuario nuevo', usuario)
 
             const data = {
                 nombre,
@@ -79,7 +79,7 @@ const googleSignIn = async (req, res = response) => {
             await usuario.save()
         }
 
-        console.log(usuario.estado)
+        // console.log(usuario.estado)
 
         // si el usuario esta activo
         if (!usuario.estado) {
@@ -105,7 +105,20 @@ const googleSignIn = async (req, res = response) => {
 }
 
 
+const renovarToken = async (req, res = response) => {
+    const { usuario } = req
+
+   // genera el jwt
+   const token = await generarJWT(usuario.id)
+
+    res.json({
+        usuario,
+        token
+    })
+}
+
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renovarToken
 }
